@@ -1,2 +1,2 @@
-# attitudes
-Structure and Empathy in Visual DataStorytelling: Evaluating their Influence on Attitude
+# Structure and Empathy in Visual Data Storytelling: Evaluating their Influence on Attitude
+Supplemental material
