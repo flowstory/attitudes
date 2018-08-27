@@ -1,0 +1,607 @@
+/* General UI*/
+* {
+    -moz-box-sizing: content-box;
+    box-sizing: content-box;
+}
+#visWrapper {
+  font-family: Arial, Helvetica, sans-serif;
+  border: 1px solid gray;
+  position: relative;
+  width: 1000px;
+  height: 650px;
+}
+
+/* MAP / SVG */
+
+#svgMap {
+	height: 100%;
+	width: 100%;
+  background-color: #DEEBF7;
+}
+
+/* Background Map */
+
+.graticule {
+  fill: none;
+  stroke: #bbb;
+  stroke-width: 0.5px;
+  stroke-linejoin: round;
+  stroke-linecap: round;
+  pointer-events: none;
+}
+
+.europe {
+  stroke: #bbb;
+  stroke-width: 1px;
+}
+
+.uk {
+   fill: hsl(0, 0%, 82%);
+   stroke-width: 2px;
+   stroke: #bbb;
+}
+
+.eu-attime {
+  fill: hsl(0, 0%, 82%);/*#ccc;*/ /*#2b8cbe;*/
+  /*transition: fill 100ms;*/
+}
+
+.eu-notyet {
+  fill: hsl(0, 0%, 91%);/*#a6bddb;*/
+  /*transition: fill 100ms;*/
+}
+
+.eu-2000, .eu-2004, .eu-2007, .eu-2013 {
+  fill: hsl(0, 0%, 82%); /*#ccc*/ /*#2b8cbe;*/
+}
+
+.non-eu {
+  fill: hsl(0, 0%, 98%); /*#F0F0F0;*/
+}
+
+.eu.mouseover, .eu.selected { /*.eu:hover, */
+  fill: hsl(0, 0%, 55%); /*#045a8d;*/
+}
+
+.europe-borders {
+  fill: none;
+  stroke: #bbb;
+  stroke-width: 1px;
+  stroke-linejoin: round;
+  stroke-linecap: round;
+  pointer-events: none;
+}
+
+
+.flow_group path, .chapter_flow_group path {
+  fill: none;
+  stroke-linecap: butt;
+  stroke-opacity:0.6;
+}
+
+/*
+.flow_group path.flow:hover {
+  stroke-opacity:0.9;
+}*/
+
+.flow_group path.flow.mouseover, .flow_group path.flow.selected {
+  stroke-opacity:0.9;
+}
+
+.flow_group path.flow.unfocus {
+  stroke-opacity:0.2;
+}
+
+.flow_group path.flow.in, .chapter_flow_group path.flow.in{
+  stroke: hsl(355, 80%, 50%); /*#b2182b;*/
+  transition-property: stroke;
+  transition-duration: 300ms;
+  transition-delay: 200ms;
+}
+
+.flow_group path.flow.out, .chapter_flow_group path.flow.out{
+  stroke: hsl(215, 80%, 50%);/*#2166ac;*/
+  transition-property: stroke;
+  transition-duration: 300ms;
+  transition-delay: 200ms;
+}
+
+.flow_group path.flow.equal, .chapter_flow_group path.flow.equal{
+  stroke: hsl(55, 90%, 45%); /*#1a9641;*/
+  /*stroke-dasharray: 10; */
+  transition-property: stroke;
+  transition-duration: 300ms;
+  transition-delay: 200ms;
+}
+/*
+.flow_group path.flow.zero {
+}
+*/
+.flow_group path.flow.desaturated, .chapter_flow_group path.flow.desaturated {
+  stroke-opacity: 0.3;
+}
+
+
+.circle {
+  fill: none;
+  stroke: pink;
+  stroke-width: 2px;
+  stroke-linecap: butt;
+  stroke-opacity:0.6;
+}
+
+
+
+/* Toggle Mode Button */
+#toggleMode {
+  position: absolute;
+  bottom: 14px;
+  left: 20px;
+  height: 24px;
+  min-width: 130px;
+  color: #333;
+  font-weight: bold;
+  background-color: rgb(250,250,250);
+  border: 2px solid #333;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: small;
+}
+
+#toggleMode.active {
+  background-color: transparent;
+  opacity: 0.7;
+}
+
+#toggleMode:hover {
+  background-color: rgba(230,230,230,255);
+}
+
+#toggleHowTo {
+  position: absolute;
+  top: 50px;
+  left: 20px;
+  height: 24px;
+  min-width: 80px;
+  color: #333;
+  background: transparent;
+  border: 2px solid #333;
+  border-radius: 4px;
+  cursor: pointer;
+  z-index: 1000;
+  font-size: small;
+}
+
+#toggleHowTo:hover {
+  background-color: rgba(230,230,230,255);
+}
+
+/* Time Slider */
+#slider {
+  position: absolute;
+  bottom: 20px;
+  left: 190px;
+  right: 300px;
+  opacity: 0.3;
+}
+
+#slider .noUi-handle {
+  cursor: pointer;
+}
+
+#slider .noUi-tooltip {
+  font-family: Arial, Helvetica, sans-serif;
+  font-weight: bold;
+  height: 20px;
+  padding:1px;
+  line-height: 1;
+}
+
+#legend {
+  position: absolute;
+  background-color: rgba(245,245,245,0.8);
+  border-radius: 2px;
+  bottom: 20px;
+  top: 350px;
+  left: 750px;
+  right: 20px;
+  padding: 10px;
+  line-height: 1;
+}
+
+.legend1 p {
+  line-height: 1;
+}
+
+.legendHeader {
+  font-weight: bold;
+  font-size: small;
+  line-height: 1;
+}
+
+#chart {
+  position: absolute;
+  top: 20px;
+  left: 600px;
+  width: 380px;
+  height: 310px;
+  background-color: rgba(245,245,245,0.8);
+  border-radius: 2px;
+  font-weight: bold;
+  font-size: 10pt;
+  padding-top: 5px;
+  text-align: center;
+  line-height: 1;
+}
+
+#chart span {
+  line-height: 1;
+}
+
+#fadeBgRight {
+    position: absolute;
+    background: linear-gradient(to right, rgba(255,255,255,0), rgba(200,200,200,1));
+    bottom: 0;
+    top: 0;
+    left: 750px;
+    right: 0;
+}
+
+#fadeBgBottom {
+    position: absolute;
+    background: linear-gradient(to bottom, rgba(255,255,255,0), rgba(200,200,200,1));
+    bottom: 0;
+    top: 590px;
+    left: 0;
+    right: 0;
+}
+
+#title {
+  padding: 0;
+  margin: 0;
+  position: absolute;
+  top: 20px;
+  left: 20px;
+  color: #333333;
+  font-weight: bold;
+  font-size: 14pt;
+  z-index: 3001;
+}
+
+.tooltip {
+  position: absolute;
+  text-align: left;
+  border-radius: 2px;
+  border: 1px solid #333;
+  padding: 5px;
+  margin-top: 5px;
+  margin-left: 5px;
+  font: 12px sans-serif;
+  background: #ddd;
+  pointer-events: none;
+  z-index: 1500;
+}
+
+.txtIn {
+  color: hsl(355, 80%, 50%);
+}
+
+.txtOut {
+  color: hsl(215, 80%, 50%);
+}
+
+.txtEqual {
+  color: hsl(55, 90%, 45%);
+}
+
+.country-name {
+    margin: 0 !important;
+    font-size: small;
+}
+
+.key-dot {
+    display: inline-block;
+    height: 10px;
+    margin-right: .5em;
+    width: 10px;
+    border: #bbb solid 1px;
+}
+
+.legend1 {
+    margin-right:20px;
+}
+
+.member { background: hsl(0, 0%, 82%);}
+.candidate { background: hsl(0, 0%, 91%);}
+.noneu { background: hsl(0, 0%, 98%);}
+
+
+#journeySelection {
+  position: absolute;
+  top: 60px;
+  right: 20px;
+  width: auto;
+  height: auto;
+  background-color: rgba(245,245,245,0.8);
+  border-radius: 2px;
+  font-weight: bold;
+  font-size: 10pt;
+  padding: 5px;
+  z-index: 3002;
+}
+
+.explanation {
+  /*border: 2px solid #FF69B4;*/
+  background-color: rgba(255,105,180,0.8);
+}
+
+.storyButton {
+  text-align: center;
+  border-radius: 2px;
+  border: 1px solid #333;
+  float: left;
+  margin: 2px;
+  padding: 4px;
+  cursor: pointer;
+}
+
+.storyButton:hover {
+  background-color: rgba(200,200,200,0.8);
+}
+
+.storyButton.deactivate:hover, .storyButton.transition:hover {
+  background-color: rgba(200,200,200,0);
+  cursor: default;
+}
+
+.storyButton.deactivate, .storyButton.deactivate > p, .storyButton.deactivate > svg > image {
+  opacity: 0.2;
+  transition: opacity 0.5s
+}
+
+.storyButton p {
+  margin:0;
+  line-height: 1;
+}
+
+.storyButton.transition {
+  border: 1px solid transparent;
+  transition: border-color 1s;
+}
+
+#storyFocusMask {
+  position: absolute;
+  bottom: 0;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 2000;
+}
+
+#storyText, #storyTextC2{
+  padding: 10px;
+  position: absolute;
+  top: 180px;
+  left: 300px;
+  width: 350px;
+  height: auto;
+  z-index: 3000;
+  background-color: rgba(250,250,250,0.8);
+  border-radius: 2px;
+  font-size: 14pt;
+  visibility: hidden;
+  opacity: 0;
+  font-family: serif;
+  font-style: italic;
+  line-height: 1.2;
+}
+#storyTextC2{
+  font-style: normal;
+  font-size: 14pt;
+  top: 10px;
+  left: 10px;
+  width: 600px;
+  border: 1px solid #333333;
+  line-height: 1;
+}
+
+#storyTextC2 input[type=radio]{
+  opacity: 1;
+  position: relative;
+  z-index: 3001;
+  width: auto;
+  height: auto;
+}
+
+#timeBar {
+  position: absolute;
+  right:0;
+  top:0;
+  width: 8px;
+  height: 0;
+  background-color: rgba(45,130,185,0.6);
+}
+
+#progressBar {
+  position: absolute;
+  right:8px;
+  top:0;
+  width: 8px;
+  height: 0;
+  background-color: hsla(360,50%,50%,0.6);
+}
+
+#numericTimer {
+  position: absolute;
+  right: 25px;
+  bottom: 2px;
+  font-weight: normal;
+  color: #666;
+  font-size: medium;
+  z-index: 3000;
+}
+
+#numericTimer.green {
+  color: #666;
+}
+
+#numericTimer.orange {
+  color: #666;
+}
+
+#numericTimer.red {
+  color: red;
+}
+
+
+#hintsCondition1 {
+  pointer-events:none;  
+  z-index: 999;
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  font-size: medium;
+}
+
+#hintsCondition2 {
+  pointer-events:none;  
+  z-index: 999;
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  font-size: medium;
+}
+
+#hintsCondition3 {
+  pointer-events:none;  
+  z-index: 999;
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  font-size: medium;
+}
+
+.yearButton{
+  font-size: 11pt;
+  line-height: 1;
+  height: 30px;
+  width: 45px;
+  padding: 0;
+}  
+
+#storyNavigation {
+  position: relative;
+  max-height: 40px;
+  width: 100%;
+  display: flex;
+  margin-top: 20px;
+}
+
+.navButton {
+  color: #333;
+  font-weight: bold;
+  background-color: rgb(250,250,250);
+  border: 2px solid #333;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 20pt;
+  height: 36px;
+  width: 36px;
+  visibility: hidden;
+  opacity: 0;
+  line-height: 1;
+}
+
+#navigateDown {
+  visibility: visible;
+  opacity: 1;
+}
+
+.navButton>div {
+  padding: 0;
+  margin: 0;
+  height: 36px;
+  width: 36px;
+  display: table-cell;
+  vertical-align: middle;
+  text-align: center;
+}
+
+.navButton:hover {
+  background-color: rgba(230,230,230,255);
+}
+
+.navButton.atEnd {
+  cursor: default;
+  color: #CCC;
+}
+
+.navButton.atEnd:hover {
+  background-color: rgb(250,250,250);
+}
+
+#chapterProgress {
+  border: 2px solid purple;
+  background: linear-gradient(left, rgba(128, 0, 128, 0.5) 0%, transparent 0%);
+  background: -webkit-linear-gradient(left, rgba(128, 0, 128, 0.5) 0%, transparent 0%);
+  background: -moz-linear-gradient(left, rgba(128, 0, 128, 0.5) 0%, transparent 0%);
+  background: -ms-linear-gradient(left, rgba(128, 0, 128, 0.5) 0%, transparent 0%);
+  width:100%;
+  height: 20px;
+  margin: 10px;
+  padding: 0;
+  flex: 1;
+  visibility: hidden;
+  opacity: 0;
+}
+
+.infoModal {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  top: 0;
+  left: 0;
+  background-color: rgba(100,100,100,0.6);
+  z-index:9999;
+
+    /* center a div insie another div*/
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: center;
+}
+
+.infoModalContent{
+    width: 50%;
+    height: auto;
+    margin: 0;
+    padding:5px;
+    background: #ddd;
+    border: 2px solid #666;
+    border-radius: 4px; 
+}
+
+.infoModalContent>.okButtonDiv {
+  text-align: right;
+}
+.infoModalContent>div>.okButton {
+  position: relative;
+  color: #333;
+  font-weight: bold;
+  background-color: rgb(250,250,250);
+  border: 2px solid #666;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: large;
+}
+
+.infoModalContent>.infoModalText {
+  padding: 10px;
+}

@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <link rel="stylesheet" type="text/css" href="css/nouislider.min.css">
+  <link rel="stylesheet" type="text/css" href="css/ukflow.css">
+</head>
+<body>
+  <div id="visWrapper">&nbsp;</div>
+  
+  <script src="lib/d3.v4.min.js"></script>
+  <script src="lib/topojson.v3.min.js"></script>
+  <script src="lib/nouislider.min.js"></script>
+
+  <!--flowData in data.js-->
+  <script src="data/data.js"></script> <!-- <script src="data/data.min.js"></script> -->
+
+  <!--only in condtion 2 -->
+  <script src="data/storyscript2.js"></script> <!--min-->
+
+  <!--only in condtion 3 -->
+  <script src="data/storyscript3.js"></script> <!--min-->
+
+  <script src="src/ukflow.js"></script> <!--min-->
+
+  <script>
+    var storyScript;
+    //see comments in: https://cmatskas.com/get-url-parameters-using-javascript/
+    function getUrlVars() {var vars = {};var parts = window.location.href.replace(/[?&]+([^=&]+)=([^&]*)/gi, function(m,key,value) {if(vars[key]){if(vars[key] instanceof Array){vars[key].push(value);}else{vars[key] = [vars[key], value];}}else{vars[key] = value;}});return vars;}
+    var urlVars = getUrlVars();
+    var condition = 1;
+    if ("condition" in urlVars && [1,2,3].includes(Number(urlVars.condition))) {
+      condition = Number(urlVars.condition);
+    }
+
+    if (condition === 2) {
+      storyScript = storyScript2;
+    } else if (condition === 3) {
+      storyScript = storyScript3;
+    }
+
+    //call from qualtrics js editor
+    Flowstory.initFlowstory(condition, "visWrapper");
+  </script>
+
+</body>
+</html>
