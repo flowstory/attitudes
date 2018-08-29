@@ -48,8 +48,8 @@ qDF = pd.read_csv("../data_raw/qualtrics_experiment_2.csv")
 
 # remove second header, save csv, load again (for correct type recognition)
 qDF.drop(qDF.index[[0,1]], inplace=True)
-qDF.to_csv("../data_raw/qualtrics_experiment_2_temp.csv", index=False)
-qDF = pd.read_csv("../data_raw/qualtrics_experiment_2_temp.csv")
+qDF.to_csv("../data_raw/qualtrics_experiment_2_single_header.csv", index=False)
+qDF = pd.read_csv("../data_raw/qualtrics_experiment_2_single_header.csv")
 #remove no consent (and so any mobile devices, wrong resolutions, etc., they never reached consent stage)
 qDF = qDF[qDF.Consent == 1]
 
@@ -61,12 +61,6 @@ pDF = pDF[(pDF.status != "Rejected") & (pDF.status != "Timed-Out")]
 
 # merge qualtrics and prolific data
 df = qDF.join(pDF.set_index("participant_id"), on="PROLIFIC_PID", how="inner")
-
-hvIdx = []
-hvIdxPageSubmit = []
-imIdx = ["ESS8-B38","ESS8-B39","ESS8-B40a","ESS8-B40","ESS8-B41_1","ESS8-B42_1","ESS8-B43_1"]
-imIdx2 = ["ESS8-B38","ESS8-B39","ESS8-B40a","ESS8-B40","ESS8-B41","ESS8-B42","ESS8-B43"]
-imIdxPageSubmit = ["{}-Timer_Page Submit".format(i) for i in imIdx2]
 
 # === CORRECTIONS ===
 
@@ -81,6 +75,9 @@ df["LeftRight"].replace(list(range(1,12)), list(range(0,11)),inplace=True)
 df["Income"].replace([2,3,5],[3,2,np.nan], inplace=True)
 df["Education"].replace([5,6,9],[3,0,np.nan], inplace=True)
 df["Region"] = df["Region"].apply(lambda r: recodeRegion(r))
+
+hvIdx = []
+hvIdxPageSubmit = []
 
 for i in range(ord('A'), ord('U')+1):
     hvIdx.append("ESS8-H-{}".format(chr(i)))
@@ -110,6 +107,10 @@ df.loc[df.Condition == 3, "C1Timer_Click Count"] = df["C3Timer_Click Count"]
 df.rename(index=str, columns={"C1Timer_First Click":"VisTimer_First Click", "C1Timer_Last Click":"VisTimer_Last Click","C1Timer_Page Submit":"VisTimer_Page Submit","C1Timer_Click Count":"VisTimer_Click Count"}, inplace=True)
 
 # === CALCULATIONS FOR FILTER ===
+
+imIdx = ["ESS8-B38","ESS8-B39","ESS8-B40a","ESS8-B40","ESS8-B41_1","ESS8-B42_1","ESS8-B43_1"]
+imIdx2 = ["ESS8-B38","ESS8-B39","ESS8-B40a","ESS8-B40","ESS8-B41","ESS8-B42","ESS8-B43"]
+imIdxPageSubmit = ["{}-Timer_Page Submit".format(i) for i in imIdx2]
 
 df["HV_Time_Sum"] = df[hvIdxPageSubmit].sum(axis=1)
 df["HV_Time_Mean"] = df[hvIdxPageSubmit].mean(axis=1)

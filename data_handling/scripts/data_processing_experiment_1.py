@@ -40,30 +40,24 @@ def interactionCount(log):
     j = json.loads(log)
     return len(j)
 
-"""
-- set the working directory
-"""
-baseFolder = "C:\\Users\\johannes\\ownCloud\\FlowstoryPhD\\flowstory_3\\repetition\\data_handling\\{0}"
-
-### DATA LOADING ###
+# === DATA LOADING, CLEANING, MERGING ===
 
 """
-- load Qualtrics data (both runs)
+- load Qualtrics data
 - remove/drop the first two rows (which are extended headers, but not required); header ("first" row) remains
 - save to a new csv file
 - load new csv file to existing dataframe (to associate correct data types)
 """
 
-q2DF = pd.read_csv(baseFolder.format("results\\qualtrics_r2.csv"))
+q2DF = pd.read_csv("../data_raw/qualtrics_experiment_1.csv")
 q2DF.drop(q2DF.index[[0,1]], inplace=True)
-q2DF.to_csv(baseFolder.format("qualtrics_r2_single_header.csv"), index=False)
-q2DF = pd.read_csv(baseFolder.format("qualtrics_r2_single_header.csv"))
+q2DF.to_csv("../data_raw/qualtrics_experiment_1_single_header.csv", index=False)
+q2DF = pd.read_csv("../data_raw/qualtrics_experiment_1_single_header.csv")
 
 """
-- load Prolific data (both runs)
+- load Prolific data
 """
-p2DF = pd.read_csv(baseFolder.format("results\\prolific_r2.csv"))
-
+p2DF = pd.read_csv("../data_raw/prolific_experiment_1.csv")
 
 ### DATA FILTERING: REJECTED, TIMED-OUT, BROWSER, DEVICES ###
 
@@ -85,12 +79,18 @@ p2DF = p2DF[(p2DF.status != "Rejected") & (p2DF.status != "Timed-Out")]
 """
 df2 = q2DF.join(p2DF.set_index("participant_id"), on="PROLIFIC_PID", how="inner")
 
+
+# === CORRECTIONS ===
+
 """
 - renaming columns
 """
 
-df2.rename(index=str, columns={"condition":"Condition","Religiosity_1":"Religiosity", "Left-Right_1":"LeftRight", "Current UK area of residence":"Region", "Age":"AgeGroup", "age": "Age"}, inplace=True)
+df2.rename(index=str, columns={"Duration (in seconds)": "Duration", "condition":"Condition","Religiosity_1":"Religiosity", "Left-Right_1":"LeftRight", "Current UK area of residence":"Region", "Age":"AgeGroup", "age": "Age"}, inplace=True)
 
+### group name ####
+
+df2["Group"] = df2.Condition.apply(lambda c: "exploration" if c == 1 else "structure" if c==2 else "empathy")
 
 ### DEMOGRAPHICS ###
 
@@ -101,16 +101,10 @@ df2.rename(index=str, columns={"condition":"Condition","Religiosity_1":"Religios
 - correct Income for R1/R2
 - correct Education for R1/R2
 """
-#df1["Gender"].replace([3],[1], inplace=True) #one participant said PNA, but in there in prolific data sex=Male (ResponseID = R_VUc68u7pp3Lxd3H)
-#TODO: Handle Gender for df2 (! all provided gender)
-
-# Religiosity now correct for R2!
-# LeftRight now correct for R2!
 
 df2["Income"].replace([5],[np.nan], inplace=True) #R2: 2,3/3,2 mix up corrected
 
 df2["Education"].replace([5,6,9],[3,0,np.nan], inplace=True)
-
 
 
 df2["Region"] = df2["Region"].apply(lambda r: recodeRegion(r))
@@ -131,9 +125,6 @@ df2.loc[df2.Condition == 2, "C1Timer_Click Count"] = df2["C2Timer_Click Count"]
 df2.loc[df2.Condition == 3, "C1Timer_Click Count"] = df2["C3Timer_Click Count"]
 
 df2.rename(index=str, columns={"C1Timer_First Click":"VisTimer_First Click", "C1Timer_Last Click":"VisTimer_Last Click","C1Timer_Page Submit":"VisTimer_Page Submit","C1Timer_Click Count":"VisTimer_Click Count"}, inplace=True)
-df2.drop(["C2Timer_First Click","C3Timer_First Click","C2Timer_Last Click","C3Timer_Last Click","C2Timer_Page Submit","C3Timer_Page Submit","C2Timer_Click Count","C3Timer_Click Count"], axis=1, inplace=True)
-
-
 
 ### HUMAN VALUES ###
 
@@ -216,17 +207,12 @@ df2['IM_POST_PerceivedThreat_NoAnswer_Count'] = df2[imIdxPost[4:]].isnull().sum(
 df2['IM_POST_NoAnswer_Count'] = df2['IM_POST_Reject_NoAnswer_Count'] + df2['IM_POST_PerceivedThreat_NoAnswer_Count']
  
 
-
 ### FILTER QUESTIONS ###
 
 df2["F_CorrectAnswers_Count"] = 0      
 df2.loc[df2["FilterColor"] == 2, "F_CorrectAnswers_Count"] += 1
 df2.loc[df2["FilterCountry"] == 4, "F_CorrectAnswers_Count"] += 1
 df2.loc[df2["FilterReason"] == 1, "F_CorrectAnswers_Count"] += 1
-
-### group name ####
-
-df2["Group"] = df2.Condition.apply(lambda c: "exploration" if c == 1 else "structure" if c==2 else "empathy")
 
 
 ### LOGGING ###
@@ -327,14 +313,14 @@ df2.rename(index=str, columns=rename_cols, inplace=True)
 
 dropCols = ["C2Timer_First Click","C3Timer_First Click","C2Timer_Last Click","C3Timer_Last Click","C2Timer_Page Submit","C3Timer_Page Submit","C2Timer_Click Count","C3Timer_Click Count"]
 dropCols += ["StartDate","EndDate","Status","IPAddress","Progress","Finished","RecipientLastName","RecipientFirstName","RecipientEmail","ExternalReference","LocationLatitude","LocationLongitude","DistributionChannel","UserLanguage"]
-dropCols += ["PROLIFIC_PID","SESSION_ID","session_id","status","started_datetime","completed_date_time","time_taken","sex","language","current_country_of_residence","nationality","country_of_birth","ethnicity","student_status","employment_status","reviewed_at_datetime","entered_code","Nationality","Country of Birth","Date Of Birth", "First Language"]
-dropCols += [col for col in df.columns if "MetaInfo" in col]
-dropCols += [col for col in df.columns if "First Click" in col]
-dropCols += [col for col in df.columns if "Last Click" in col]
-dropCols += [col for col in df.columns if "Page Submit" in col]
-dropCols += [col for col in df.columns if "Click Count" in col]
-dropCols += [col for col in df.columns if "-PNA" in col]
+dropCols += ["PROLIFIC_PID","SESSION_ID","session_id","status","started_datetime","completed_date_time","time_taken","reviewed_at_datetime","entered_code","Nationality","Country of Birth","Sex","Student Status","First Language","Current Country of Residence", "Employment Status"]
+dropCols += [col for col in df2.columns if "MetaInfo" in col]
+dropCols += [col for col in df2.columns if "First Click" in col]
+dropCols += [col for col in df2.columns if "Last Click" in col]
+dropCols += [col for col in df2.columns if "Page Submit" in col]
+dropCols += [col for col in df2.columns if "Click Count" in col]
+dropCols += [col for col in df2.columns if "-PNA" in col]
 
-df.drop(dropCols, axis=1, inplace=True)
+df2.drop(dropCols, axis=1, inplace=True)
 
-df.to_csv("../data_processed/qualtrics_experiment_1_github.csv", index=False)
+df2.to_csv("../data_processed/qualtrics_experiment_1_github.csv", index=False)

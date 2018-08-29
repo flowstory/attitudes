@@ -2,3 +2,7 @@
 data_handling/data_raw/qualtrics_experiment_2.csv
 data_handling/data_raw/prolific_experiment_2.csv
 data_handling/data_raw/qualtrics_experiment_2_temp.csv
+data_handling/data_raw/qualtrics_experiment_2_single_header.csv
+data_handling/data_raw/qualtrics_experiment_1.csv
+data_handling/data_raw/prolific_experiment_1.csv
+data_handling/data_raw/qualtrics_experiment_1_single_header.csv
