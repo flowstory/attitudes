@@ -193,18 +193,18 @@ df2["IM_PRE_Time_ST_1_Count"] = df2[imIdxPageSubmitPre][df2[imIdxPageSubmitPre] 
 df2["IM_PRE_Time_ST_2_Count"] = df2[imIdxPageSubmitPre][df2[imIdxPageSubmitPre] < 2].count(axis=1)
 df2["IM_PRE_Time_ST_3_Count"] = df2[imIdxPageSubmitPre][df2[imIdxPageSubmitPre] < 3].count(axis=1)
 
-df2['IM_PRE_Reject_NoAnswer_Count'] = df2[imIdxPre[:4]].isnull().sum(axis=1)
+df2['IM_PRE_Opposition_NoAnswer_Count'] = df2[imIdxPre[:4]].isnull().sum(axis=1)
 df2['IM_PRE_PerceivedThreat_NoAnswer_Count'] = df2[imIdxPre[4:]].isnull().sum(axis=1)
-df2['IM_PRE_NoAnswer_Count'] = df2['IM_PRE_Reject_NoAnswer_Count'] + df2['IM_PRE_PerceivedThreat_NoAnswer_Count']
+df2['IM_PRE_NoAnswer_Count'] = df2['IM_PRE_Opposition_NoAnswer_Count'] + df2['IM_PRE_PerceivedThreat_NoAnswer_Count']
       
 df2["IM_POST_Time_Sum"] = df2[imIdxPageSubmitPost].sum(axis=1)
 df2["IM_POST_Time_ST_1_Count"] = df2[imIdxPageSubmitPost][df2[imIdxPageSubmitPost] < 1].count(axis=1)
 df2["IM_POST_Time_ST_2_Count"] = df2[imIdxPageSubmitPost][df2[imIdxPageSubmitPost] < 2].count(axis=1)
 df2["IM_POST_Time_ST_3_Count"] = df2[imIdxPageSubmitPost][df2[imIdxPageSubmitPost] < 3].count(axis=1)
 
-df2['IM_POST_Reject_NoAnswer_Count'] = df2[imIdxPost[:4]].isnull().sum(axis=1)
+df2['IM_POST_Opposition_NoAnswer_Count'] = df2[imIdxPost[:4]].isnull().sum(axis=1)
 df2['IM_POST_PerceivedThreat_NoAnswer_Count'] = df2[imIdxPost[4:]].isnull().sum(axis=1)
-df2['IM_POST_NoAnswer_Count'] = df2['IM_POST_Reject_NoAnswer_Count'] + df2['IM_POST_PerceivedThreat_NoAnswer_Count']
+df2['IM_POST_NoAnswer_Count'] = df2['IM_POST_Opposition_NoAnswer_Count'] + df2['IM_POST_PerceivedThreat_NoAnswer_Count']
  
 
 ### FILTER QUESTIONS ###
@@ -234,11 +234,11 @@ df2 = df2[(df2["F_CorrectAnswers_Count"] > 0) &
         (df2["HV_Time_Sum"] >= 63) &
         (df2["HV_Option_Selected_NoAnswer_Count"] <= 5) &
         (df2["HV_Option_Selected_Same_Max"] <= 16) &
-        (df2['IM_PRE_Reject_NoAnswer_Count'] <= 2) &
+        (df2['IM_PRE_Opposition_NoAnswer_Count'] <= 2) &
         (df2['IM_PRE_PerceivedThreat_NoAnswer_Count'] <= 1) &
         (df2["IM_PRE_Time_ST_2_Count"] <= 2) &
         (df2["IM_PRE_Time_Sum"] >= 21) &
-        (df2['IM_POST_Reject_NoAnswer_Count'] <= 2) &
+        (df2['IM_POST_Opposition_NoAnswer_Count'] <= 2) &
         (df2['IM_POST_PerceivedThreat_NoAnswer_Count'] <= 1) &
         (df2["IM_POST_Time_ST_2_Count"] <= 2) &
         (df2["IM_POST_Time_Sum"] >= 21)]   

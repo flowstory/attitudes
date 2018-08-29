@@ -135,9 +135,9 @@ df["IM_Time_ST_1_Count"] = df[imIdxPageSubmit][df[imIdxPageSubmit] < 1].count(ax
 df["IM_Time_ST_2_Count"] = df[imIdxPageSubmit][df[imIdxPageSubmit] < 2].count(axis=1)
 df["IM_Time_ST_3_Count"] = df[imIdxPageSubmit][df[imIdxPageSubmit] < 3].count(axis=1)
 
-df['IM_Reject_NoAnswer_Count'] = df[imIdx[:4]].isnull().sum(axis=1)
+df['IM_Opposition_NoAnswer_Count'] = df[imIdx[:4]].isnull().sum(axis=1)
 df['IM_PerceivedThreat_NoAnswer_Count'] = df[imIdx[4:]].isnull().sum(axis=1)
-df['IM_NoAnswer_Count'] = df['IM_Reject_NoAnswer_Count'] + df['IM_PerceivedThreat_NoAnswer_Count']
+df['IM_NoAnswer_Count'] = df['IM_Opposition_NoAnswer_Count'] + df['IM_PerceivedThreat_NoAnswer_Count']
       
 df["F_CorrectAnswers_Count"] = 0      
 df.loc[df["FilterColor"] == 2, "F_CorrectAnswers_Count"] += 1
@@ -161,7 +161,7 @@ df = df[(df["F_CorrectAnswers_Count"] > 0) &
         (df["HV_Time_Sum"] >= 63) &
         (df["HV_Option_Selected_NoAnswer_Count"] <= 5) &
         (df["HV_Option_Selected_Same_Max"] <= 16) &
-        (df['IM_Reject_NoAnswer_Count'] <= 2) &
+        (df['IM_Opposition_NoAnswer_Count'] <= 2) &
         (df['IM_PerceivedThreat_NoAnswer_Count'] <= 1) &
         (df["IM_Time_ST_2_Count"] <= 2) &
         (df["IM_Time_Sum"] >= 21)]   
@@ -207,7 +207,7 @@ df['IM_PerceivedThreat_Sum'] = df["ESS8-B41_1"] + df["ESS8-B42_1"] + df["ESS8-B4
 df['IM_PerceivedThreat_Mean'] = df[["ESS8-B41_1", "ESS8-B42_1", "ESS8-B43_1"]].mean(axis=1)
 df['IM_PerceivedThreat_Median'] = df[["ESS8-B41_1", "ESS8-B42_1", "ESS8-B43_1"]].median(axis=1)
 
-df.rename(index=str, columns={"ESS8-B41_1":"IM_Economic_Threat","ESS8-B42_1":"IM_Cultural_Threat","ESS8-B43_1":"IM_Overall_Threat","ESS8-B38":"IM_Oppostition_Same", "ESS8-B39":"IM_Oppostition_Different", "ESS8-B40a":"IM_Oppostition_PoorerInEurope", "ESS8-B40":"IM_Oppostition_PoorerOutEurope"}, inplace=True)
+df.rename(index=str, columns={"ESS8-B41_1":"IM_Economic_Threat","ESS8-B42_1":"IM_Cultural_Threat","ESS8-B43_1":"IM_Overall_Threat","ESS8-B38":"IM_Opposition_Same", "ESS8-B39":"IM_Opposition_Different", "ESS8-B40a":"IM_Opposition_PoorerInEurope", "ESS8-B40":"IM_Opposition_PoorerOutEurope"}, inplace=True)
 
 dropCols = ["C2Timer_First Click","C3Timer_First Click","C2Timer_Last Click","C3Timer_Last Click","C2Timer_Page Submit","C3Timer_Page Submit","C2Timer_Click Count","C3Timer_Click Count"]
 dropCols += ["StartDate","EndDate","Status","IPAddress","Progress","Finished","RecipientLastName","RecipientFirstName","RecipientEmail","ExternalReference","LocationLatitude","LocationLongitude","DistributionChannel","UserLanguage"]
