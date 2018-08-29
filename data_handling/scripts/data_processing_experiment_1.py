@@ -323,4 +323,4 @@ dropCols += [col for col in df2.columns if "-PNA" in col]
 
 df2.drop(dropCols, axis=1, inplace=True)
 
-df2.to_csv("../data_processed/qualtrics_experiment_1_github.csv", index=False)
+df2.to_csv("../data_processed/experiment_1_filtered.csv", index=False)

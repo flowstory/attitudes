@@ -221,4 +221,4 @@ dropCols += [col for col in df.columns if "-PNA" in col]
 
 df.drop(dropCols, axis=1, inplace=True)
 
-df.to_csv("../data_processed/qualtrics_experiment_2_github.csv", index=False)
+df.to_csv("../data_processed/experiment_2_filtered.csv", index=False)

@@ -7,9 +7,9 @@ Created on Mon Jul 16 14:32:20 2018
 
 import pandas as pd
 
-ess8 = pd.read_csv("../data_processed/ess8_filtered_github.csv")
-ex1 = pd.read_csv("../data_processed/qualtrics_experiment_1_github.csv")
-ex2 = pd.read_csv("../data_processed/qualtrics_experiment_2_github.csv")
+ess8 = pd.read_csv("../data_processed/ess8_filtered.csv")
+ex1 = pd.read_csv("../data_processed/experiment_1_filtered.csv")
+ex2 = pd.read_csv("../data_processed/experiment_2_filtered.csv")
 
 #Add RunId 0...ess, 1...run1, 2...run2
 ess8['RunId'] = 0
@@ -63,4 +63,4 @@ ess8.rename(index=str, columns=rename_cols, inplace=True)
       
 merged = pd.concat([ex1, ex2, ess8], join="outer")
 
-merged.to_csv("../data_processed/ex1_ex2_ess8_merged.csv", index=False)
+merged.to_csv("../data_processed/merged_ex1_ex2_ess8.csv", index=False)

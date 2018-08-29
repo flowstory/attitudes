@@ -110,4 +110,4 @@ ess8.rename(index=str, columns={"imbgeco": "IM_Economic_Threat", "imueclt":"IM_C
 dropCols = ["inwyye", "inwmme", "inwdde"]
 ess8.drop(dropCols, axis=1, inplace=True)
 
-ess8.to_csv("../data_processed/ess8_filtered_github.csv", index=False)
+ess8.to_csv("../data_processed/ess8_filtered.csv", index=False)
