@@ -43,13 +43,6 @@ rename_cols = {'IM_Opposition_Mean': 'IM_POST_Opposition_Mean',
                'IM_Opposition_Median': 'IM_POST_Opposition_Median',
                'IM_Opposition3_Median': 'IM_POST_Opposition3_Median',
                'IM_PerceivedThreat_Median': 'IM_POST_PerceivedThreat_Median',
-               "IM_Economic_Threat": "IM_POST_Economic_Threat",
-               "IM_Cultural_Threat":"IM_POST_Cultural_Threat",
-               "IM_Overall_Threat":"IM_POST_Overall_Threat",
-               "IM_Opposition_Same":"IM_POST_Opposition_Same",
-               "IM_Opposition_Different":"IM_POST_Opposition_Different",
-               "IM_Opposition_PoorerInEurope":"IM_POST_Opposition_PoorerInEurope",
-               "IM_Opposition_PoorerOutEurope":"IM_POST_Opposition_PoorerOutEurope",
                "IM_Opposition_NoAnswer_Count":"IM_POST_Opposition_NoAnswer_Count",
                "IM_NoAnswer_Count": "IM_POST_NoAnswer_Count",
                "IM_PerceivedThreat_NoAnswer_Count": "IM_POST_PerceivedThreat_NoAnswer_Count",
@@ -64,3 +57,11 @@ ess8.rename(index=str, columns=rename_cols, inplace=True)
 merged = pd.concat([ex1, ex2, ess8], join="outer")
 
 merged.to_csv("../data_processed/merged_ex1_ex2_ess8.csv", index=False)
+
+#Selected Columns for R
+user = ["ResponseId", "RunId", "Group", "Condition"]
+demogs = ["Gender", "Age", "Education", "Income", "Religiosity","LeftRight"]
+hv = ["HV_OpennessToChange", "HV_Conservation", "HV_SelfTranscendence", "HV_SelfEnhancement", "HV_Dimension_Open", "HV_Dimension_Self"]
+im = ["IM_PRE_Opposition_Mean","IM_POST_Opposition_Mean","IM_PRE_Opposition3_Mean", "IM_POST_Opposition3_Mean", "IM_PRE_PerceivedThreat_Mean", "IM_POST_PerceivedThreat_Mean", "IM_PRE_Opposition_Same", "IM_POST_Opposition_Same", "IM_PRE_Opposition_Different", "IM_POST_Opposition_Different", "IM_PRE_Opposition_PoorerInEurope", "IM_POST_Opposition_PoorerInEurope", "IM_PRE_Opposition_PoorerOutEurope", "IM_POST_Opposition_PoorerOutEurope", "IM_PRE_Economic_Threat", "IM_POST_Economic_Threat", "IM_PRE_Cultural_Threat", "IM_POST_Cultural_Threat", "IM_PRE_Overall_Threat", "IM_POST_Overall_Threat"]
+selection = user + demogs + hv + im
+merged[selection].to_csv("../data_processed/merged_ex1_ex2_ess8_selection.csv", index=False)
