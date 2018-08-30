@@ -61,7 +61,7 @@ likertPlot <- function(ldf, yL=NULL, xL=NULL, myCols=NULL, aK=NULL, scaleAt=seq(
   )
 }
 
-# 
+# replace with absolute path of script folder
 path <- "C:/Users/johannes/ownCloud/FlowstoryPhD/flowstory_3/github/attitudes/data_handling/scripts"
 setwd(path)
 
