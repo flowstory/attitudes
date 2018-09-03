@@ -23,7 +23,7 @@ createLikertDataFrame <- function(column=NULL, display=NULL, levels=NULL, labels
     }
     freqs <- setNames(nm=c(col,'val'),data.frame(table(factor(selection[,col],levels=levels,exclude=NULL))))
     if(d$g != FALSE){
-      df[paste(d$g, d$r, sep=" ")] <- freqs$val
+      df[paste(d$g, d$dR, sep=" ")] <- freqs$val
     } else {
       df[d$dR] <- freqs$val
     }
@@ -186,7 +186,8 @@ groups <- list(list(c="IM_PRE_Opposition_Same", g="empathy", r=1, dR="ex1 pre"),
                
                list(c="IM_POST_Opposition_Same", g=FALSE, r=0, dR="ess"))
 ldfOppostionSame <- createLikertDataFrame(display=groups, levels=c(1,2,3,4,5), labels=c("Allow many","Allow some","Allow a few", "Allow none", "Prefer not to say"))
-myCols <- c("#fecc5c", "#fd8d3c", "#f03b20", "#bd0026", "#cccccc")
+myCols <- brewer.pal.likert(4, "Reds")
+myCols[[length(myCols) + 1 ]] <- "#cccccc"
 lpOppostionSame <- likertPlot(ldfOppostionSame, yL="Opposition Same", xL="Percent of Participants", myCols=myCols, aK=list(cex=0.9, reverse = FALSE, columns=1, space="bottom"))
 
 #IM Opp Different
@@ -204,7 +205,8 @@ groups <- list(list(c="IM_PRE_Opposition_Different", g="empathy", r=1, dR="ex1 p
                
                list(c="IM_POST_Opposition_Different", g=FALSE, r=0, dR="ess"))
 ldfOppostionDifferent <- createLikertDataFrame(display=groups, levels=c(1,2,3,4,5), labels=c("Allow many","Allow some","Allow a few", "Allow none", "Prefer not to say"))
-myCols <- c("#fecc5c", "#fd8d3c", "#f03b20", "#bd0026", "#cccccc")
+myCols <- brewer.pal.likert(4, "Reds")
+myCols[[length(myCols) + 1 ]] <- "#cccccc"
 lpOppostionDifferent <- likertPlot(ldfOppostionDifferent, yL="Opposition Different", xL="Percent of Participants", myCols=myCols, aK=list(cex=0.9, reverse = FALSE, columns=1, space="bottom"))
 
 #IM Opp PoorerInEurope
@@ -222,7 +224,8 @@ groups <- list(list(c="IM_PRE_Opposition_PoorerInEurope", g="empathy", r=1, dR="
                
                list(c="IM_POST_Opposition_PoorerInEurope", g=FALSE, r=0, dR="ess*")) #*Was dropped in ess8
 ldfOppostionPoorerInEurope <- createLikertDataFrame(display=groups, levels=c(1,2,3,4,5), labels=c("Allow many","Allow some","Allow a few", "Allow none", "Prefer not to say"))
-myCols <- c("#fecc5c", "#fd8d3c", "#f03b20", "#bd0026", "#cccccc")
+myCols <- brewer.pal.likert(4, "Reds")
+myCols[[length(myCols) + 1 ]] <- "#cccccc"
 lpOppostionPoorerInEurope <- likertPlot(ldfOppostionPoorerInEurope, yL="Opposition PoorerInEu", xL="Percent of Participants", myCols=myCols, aK=list(cex=0.9, reverse = FALSE, columns=1, space="bottom"))
 
 
@@ -241,8 +244,9 @@ groups <- list(list(c="IM_PRE_Opposition_PoorerOutEurope", g="empathy", r=1, dR=
                
                list(c="IM_POST_Opposition_PoorerOutEurope", g=FALSE, r=0, dR="ess"))
 ldfOppostionPoorerOutEurope <- createLikertDataFrame(display=groups, levels=c(1,2,3,4,5), labels=c("Allow many","Allow some","Allow a few", "Allow none", "Prefer not to say"))
-myCols <- c("#fecc5c", "#fd8d3c", "#f03b20", "#bd0026", "#cccccc")
-lpOppostionPoorerOutEurope <- likertPlot(ldfOppostionPoorerOutEurope, yL="Opposition PoorerInEu", xL="Percent of Participants", myCols=myCols, aK=list(cex=0.9, reverse = FALSE, columns=1, space="bottom"))
+myCols <- brewer.pal.likert(4, "Reds")
+myCols[[length(myCols) + 1 ]] <- "#cccccc"
+lpOppostionPoorerOutEurope <- likertPlot(ldfOppostionPoorerOutEurope, yL="Opposition PoorerOutEu", xL="Percent of Participants", myCols=myCols, aK=list(cex=0.9, reverse = FALSE, columns=1, space="bottom"))
 
 
 #IM PT Economic
@@ -336,34 +340,30 @@ pdf("../plots/demographics_likert_leftright.pdf", width=6, height=5)
 grid.arrange(lpLeftRight, ncol=1)
 dev.off()
 
-pdf("../plots/immigration_likert_oppostiion_same.pdf", width=6, height=6) 
+pdf("../plots/immigration_likert_opposition_same.pdf", width=4, height=5) 
 grid.arrange(lpOppostionSame, ncol=1)
 dev.off()
 
-pdf("../plots/immigration_likert_oppostiion_different.pdf", width=6, height=6) 
+pdf("../plots/immigration_likert_opposition_different.pdf", width=4, height=5) 
 grid.arrange(lpOppostionDifferent, ncol=1)
 dev.off()
 
-pdf("../plots/immigration_likert_oppostiion_poorer_in_europe.pdf", width=6, height=6) 
+pdf("../plots/immigration_likert_opposition_poorer_in_europe.pdf", width=4, height=5) 
 grid.arrange(lpOppostionPoorerInEurope, ncol=1)
 dev.off()
 
-pdf("../plots/immigration_likert_oppostiion_poorer_out_europe.pdf", width=6, height=6) 
+pdf("../plots/immigration_likert_opposition_poorer_out_europe.pdf", width=4, height=5) 
 grid.arrange(lpOppostionPoorerOutEurope, ncol=1)
 dev.off()
 
-pdf("../plots/immigration_likert_perceived_threat_economic.pdf", width=6, height=6) 
+pdf("../plots/immigration_likert_perceived_threat_economic.pdf", width=5, height=5) 
 grid.arrange(lpEconomicThreat, ncol=1)
 dev.off()
 
-pdf("../plots/immigration_likert_perceived_threat_cultural.pdf", width=6, height=6) 
+pdf("../plots/immigration_likert_perceived_threat_cultural.pdf", width=5, height=5) 
 grid.arrange(lpCulturalThreat, ncol=1)
 dev.off()
 
-pdf("../plots/immigration_likert_perceived_threat_overall.pdf", width=6, height=6) 
-grid.arrange(lpOverallThreat, ncol=1)
-dev.off()
-
-pdf("../plots/immigration_likert_perceived_threat_overall.pdf", width=6, height=6) 
+pdf("../plots/immigration_likert_perceived_threat_overall.pdf", width=5, height=5) 
 grid.arrange(lpOverallThreat, ncol=1)
 dev.off()
