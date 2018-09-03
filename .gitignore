@@ -26,3 +26,7 @@ data_handling/plots/ai/demographics_age.pdf
 data_handling/plots/ai/demographics_age.ai
 data_handling/scripts/.Rhistory
 data_handling/data_processed/~$key_column_names.xlsx
+data_handling/plots/ai/immigration_perceived_threat.pdf
+data_handling/plots/ai/immigration_opposition.pdf
+data_handling/plots/ai/immigration_opposition.ai
+data_handling/plots/ai/immigration_perceived_threat.ai
