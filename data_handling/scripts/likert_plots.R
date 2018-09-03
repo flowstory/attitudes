@@ -23,7 +23,7 @@ createLikertDataFrame <- function(column=NULL, display=NULL, levels=NULL, labels
     }
     freqs <- setNames(nm=c(col,'val'),data.frame(table(factor(selection[,col],levels=levels,exclude=NULL))))
     if(d$g != FALSE){
-      df[paste(d$g, d$dR, sep=" ")] <- freqs$val
+      df[paste(d$g, d$r, sep=" ")] <- freqs$val
     } else {
       df[d$dR] <- freqs$val
     }
@@ -142,28 +142,34 @@ ldfGender <- createLikertDataFrame(column="Gender", display=groups, levels=c(1,2
 lpGender <- likertPlot(ldfGender, yL="Gender", xL="Percent of Participants", myCols=c("#67a9cf", "#ef8a62", "#cccccc"), aK=list(cex=0.9, reverse = FALSE, columns=1, space="bottom"))
 
 #AGE
+myCols <- brewer.pal.likert(6, "Blues")
+myCols[[length(myCols) + 1 ]] <- "#cccccc"
 ldfAge <- createLikertDataFrame(column="AgeBin", display=groups, levels=c(1,2,3,4,5,6,7), labels=c("18-24","25-34","35-44", "45-54", "55-64", "65 or older", "Prefer not to say"))
-lpAge <- likertPlot(ldfAge, yL="Age", xL="Percent of Participants", myCols=c("#edf8fb","#bfd3e6","#9ebcda","#8c96c6","#8856a7","#810f7c","#cccccc"), aK=list(cex=0.9, reverse = FALSE, columns=1, space="bottom"))
+lpAge <- likertPlot(ldfAge, yL="Age", xL="Percent of Participants", myCols=myCols, aK=list(cex=0.9, reverse = FALSE, columns=1, space="bottom"))
 
 #EDUCATION
+myCols <- brewer.pal.likert(5, "Blues")
+myCols[[length(myCols) + 1 ]] <- "#cccccc"
 ldfEducation <- createLikertDataFrame(column="Education", display=groups, levels=c(0,1,2,3,4,5), labels=c("Below Standards","GCSE Level Education","A-Level Education", "Vocational, Degree or Graduate Education", "Post-Graduate Education", "Prefer not to say"))
-lpEducation <- likertPlot(ldfEducation, yL="Education", xL="Percent of Participants", myCols=c("#f6eff7","#bdc9e1","#67a9cf","#1c9099","#016c59","#cccccc"), aK=list(cex=0.9, reverse = FALSE, columns=1, space="bottom"))
+lpEducation <- likertPlot(ldfEducation, yL="Education", xL="Percent of Participants", myCols=myCols, aK=list(cex=0.9, reverse = FALSE, columns=1, space="bottom"))
 
 #INCOME
+myCols <- brewer.pal.likert(4, "Blues")
+myCols[[length(myCols) + 1 ]] <- "#cccccc"
 ldfIncome <- createLikertDataFrame(column="Income", display=groups, levels=c(1,2,3,4,5), labels=c("Finding it very difficult on present income","Finding it difficult on present income","Coping on present income", "Living comfortably on present income", "Prefer not to say"))
-lpIncome <- likertPlot(ldfIncome, yL="Income", xL="Percent of Participants", myCols=c("#ffffcc","#c2e699","#78c679","#238443","#cccccc"), aK=list(cex=0.9, reverse = FALSE, columns=1, space="bottom"))
+lpIncome <- likertPlot(ldfIncome, yL="Income", xL="Percent of Participants", myCols=myCols, aK=list(cex=0.9, reverse = FALSE, columns=1, space="bottom"))
 
 #RELIGION
-myCols <- rev(likertColorBrewer(11, ReferenceZero=NULL, BrewerPaletteName="PiYG", middle.color="gray90"))
+myCols <- rev(likertColorBrewer(11, ReferenceZero=NULL, BrewerPaletteName="RdBu", middle.color="gray90"))
 myCols[[length(myCols) + 1 ]] <- "#cccccc"
 ldfReligiosity <- createLikertDataFrame(column="Religiosity", display=groups, levels=c(0,1,2,3,4,5,6,7,8,9,10,11), labels=c("not at all religious","1","2","3","4","5","6","7","8","9","very religious","Prefer not to say"))
 lpReligiosity <- likertPlot(ldfReligiosity, yL="Religiosity", xL="Percent of Participants", myCols=myCols, aK=list(cex=0.9, reverse = FALSE, columns=1, space="bottom"), scaleAt=seq(-80,20,20), vLines=seq(-90,30,10), rZ=6)
 
 #POLITICS
-myCols <- rev(likertColorBrewer(11, ReferenceZero=NULL, BrewerPaletteName="PiYG", middle.color="gray90"))
+myCols <- rev(likertColorBrewer(11, ReferenceZero=NULL, BrewerPaletteName="RdBu", middle.color="gray90"))
 myCols[[length(myCols) + 1 ]] <- "#cccccc"
 ldfLeftRight <- createLikertDataFrame(column="LeftRight", display=groups, levels=c(0,1,2,3,4,5,6,7,8,9,10,11), labels=c("left","1","2","3","4","5","6","7","8","9","right","Prefer not to say"))
-lpLeftRight <- likertPlot(ldfLeftRight, yL="LeftRight", xL="Percent of Participants", myCols=myCols, aK=list(cex=0.9, reverse = FALSE, columns=1, space="bottom"), scaleAt=seq(-80,40,20), vLines=seq(-70,40,10), rZ=6)
+lpLeftRight <- likertPlot(ldfLeftRight, yL="LeftRight", xL="Percent of Participants", myCols=myCols, aK=list(cex=0.9, reverse = FALSE, columns=1, space="bottom"), scaleAt=seq(-60,40,20), vLines=seq(-70,50,10), rZ=6)
 
 #IM Opp Same
 groups <- list(list(c="IM_PRE_Opposition_Same", g="empathy", r=1, dR="ex1 pre"),
@@ -322,11 +328,11 @@ pdf("../plots/demographics_likert_income.pdf", width=6, height=4)
 grid.arrange(lpIncome, ncol=1)
 dev.off()
 
-pdf("../plots/demographics_likert_religiosity.pdf", width=6, height=4) 
+pdf("../plots/demographics_likert_religiosity.pdf", width=6, height=5) 
 grid.arrange(lpReligiosity, ncol=1)
 dev.off()
 
-pdf("../plots/demographics_likert_leftright.pdf", width=6, height=6) 
+pdf("../plots/demographics_likert_leftright.pdf", width=6, height=5) 
 grid.arrange(lpLeftRight, ncol=1)
 dev.off()
 
