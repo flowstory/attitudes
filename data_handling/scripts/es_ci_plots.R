@@ -268,56 +268,60 @@ m <- list(m1, m2, m3, m4, m5, m6, m7)
 mycolors <- c('#6D6E70', "#009344", "#009344", "#009344", "#652C90", "#652C90", "#652C90")
 plotMeasure(m,"hv_se",100,FALSE,0.35,0.65,score_formatter_1f,mycolors,1.5,2, dstFile="../plots/human_values_esci_self_enhancement")
 
-#opposition post 1 2 Opposition
-m1 <- list(order = "J", run = 2, condition = 'empathy', measure = 'IM_PRE_Opposition3_Mean_N', color="red")
-m2 <- list(order = "I", run = 2, condition = 'empathy', measure = 'IM_POST_Opposition3_Mean_N', color="red")
-m3 <- list(order = "H", run = 1, condition = 'empathy', measure = 'IM_POST_Opposition3_Mean_N', color="green")
 
-m4 <- list(order = "G", run = 2, condition = 'structure', measure = 'IM_PRE_Opposition3_Mean_N', color="red")	
-m5 <- list(order = "F", run = 2, condition = 'structure', measure = 'IM_POST_Opposition3_Mean_N', color="red")
-m6 <- list(order = "E", run = 1, condition = 'structure', measure = 'IM_POST_Opposition3_Mean_N', color="green")
+#opposition
+m1 <- list(order = "J", run = 1, condition = 'empathy', measure = 'IM_PRE_Opposition3_Mean_N')
+m2 <- list(order = "I", run = 1, condition = 'empathy', measure = 'IM_POST_Opposition3_Mean_N')
+m3 <- list(order = "H", run = 2, condition = 'empathy', measure = 'IM_POST_Opposition3_Mean_N')
 
-m7 <- list(order = "D", run = 2, condition = 'exploration', measure = 'IM_PRE_Opposition3_Mean_N', color="red")
-m8 <- list(order = "C", run = 2, condition = 'exploration', measure = 'IM_POST_Opposition3_Mean_N', color="red")
-m9 <- list(order = "B", run = 1, condition = 'exploration', measure = 'IM_POST_Opposition3_Mean_N', color="green")
+m4 <- list(order = "G", run = 1, condition = 'structure', measure = 'IM_PRE_Opposition3_Mean_N')	
+m5 <- list(order = "F", run = 1, condition = 'structure', measure = 'IM_POST_Opposition3_Mean_N')
+m6 <- list(order = "E", run = 2, condition = 'structure', measure = 'IM_POST_Opposition3_Mean_N')
 
-m10 <- list(order = "A", run = 0, condition = 'ess', measure = 'IM_POST_Reject3_Mean_N', color="gray")
+m7 <- list(order = "D", run = 1, condition = 'exploration', measure = 'IM_PRE_Opposition3_Mean_N')
+m8 <- list(order = "C", run = 1, condition = 'exploration', measure = 'IM_POST_Opposition3_Mean_N')
+m9 <- list(order = "B", run = 2, condition = 'exploration', measure = 'IM_POST_Opposition3_Mean_N')
+
+m10 <- list(order = "A", run = 0, condition = 'ess', measure = 'IM_POST_Opposition3_Mean_N')
 
 m <- list(m1, m2, m3, m4, m5, m6, m7, m8, m9, m10)
 mycolors <- c('#6D6E70', "#009344", "#652C90", "#A07AB6", "#009344", "#652C90", "#A07AB6", "#009344", "#652C90", "#A07AB6")
-plotMeasure(m,"opposition",100,FALSE,0.3,0.5,score_formatter_1f,mycolors,2,3)	
-
+plotMeasure(m,"opposition",100,FALSE,0.3,0.5,score_formatter_1f,mycolors,2,3, dstFile="../plots/immigration_esci_opposition")
 
 
 #perceived threat
-m1 <- list(order = "J", run = 1, condition = 'empathy', measure = 'IM_PRE_PerceivedThreat_Mean_N', color="red")
-m2 <- list(order = "I", run = 1, condition = 'empathy', measure = 'IM_POST_PerceivedThreat_Mean_N', color="red")
-m3 <- list(order = "H", run = 2, condition = 'empathy', measure = 'IM_POST_PerceivedThreat_Mean_N', color="green")
+m1 <- list(order = "J", run = 1, condition = 'empathy', measure = 'IM_PRE_PerceivedThreat_Mean_N')
+m2 <- list(order = "I", run = 1, condition = 'empathy', measure = 'IM_POST_PerceivedThreat_Mean_N')
+m3 <- list(order = "H", run = 2, condition = 'empathy', measure = 'IM_POST_PerceivedThreat_Mean_N')
 
-m4 <- list(order = "G", run = 1, condition = 'structure', measure = 'IM_PRE_PerceivedThreat_Mean_N', color="red")	
-m5 <- list(order = "F", run = 1, condition = 'structure', measure = 'IM_POST_PerceivedThreat_Mean_N', color="red")
-m6 <- list(order = "E", run = 2, condition = 'structure', measure = 'IM_POST_PerceivedThreat_Mean_N', color="green")
+m4 <- list(order = "G", run = 1, condition = 'structure', measure = 'IM_PRE_PerceivedThreat_Mean_N')	
+m5 <- list(order = "F", run = 1, condition = 'structure', measure = 'IM_POST_PerceivedThreat_Mean_N')
+m6 <- list(order = "E", run = 2, condition = 'structure', measure = 'IM_POST_PerceivedThreat_Mean_N')
 
-m7 <- list(order = "D", run = 1, condition = 'exploration', measure = 'IM_PRE_PerceivedThreat_Mean_N', color="red")
-m8 <- list(order = "C", run = 1, condition = 'exploration', measure = 'IM_POST_PerceivedThreat_Mean_N', color="red")
-m9 <- list(order = "B", run = 2, condition = 'exploration', measure = 'IM_POST_PerceivedThreat_Mean_N', color="green")
+m7 <- list(order = "D", run = 1, condition = 'exploration', measure = 'IM_PRE_PerceivedThreat_Mean_N')
+m8 <- list(order = "C", run = 1, condition = 'exploration', measure = 'IM_POST_PerceivedThreat_Mean_N')
+m9 <- list(order = "B", run = 2, condition = 'exploration', measure = 'IM_POST_PerceivedThreat_Mean_N')
 
-m10 <- list(order = "A", run = 0, condition = 'ess', measure = 'IM_POST_PerceivedThreat_Mean_N', color="gray")
+m10 <- list(order = "A", run = 0, condition = 'ess', measure = 'IM_POST_PerceivedThreat_Mean_N')
 
 m <- list(m1, m2, m3, m4, m5, m6, m7, m8, m9, m10)
 mycolors <- c('#6D6E70', "#009344", "#652C90", "#A07AB6", "#009344", "#652C90", "#A07AB6", "#009344", "#652C90", "#A07AB6")
-plotMeasure(m,"perceived threat",100,FALSE,0.3,0.5,score_formatter_1f,mycolors,2,3)	
+plotMeasure(m,"perceived threat",100,FALSE,0.3,0.5,score_formatter_1f,mycolors,2,3, dstFile="../plots/immigration_esci_perceived_threat")
 
-m1 <- list(order = "C",run = 2, condition = 'empathy', measure = 'IM_DELTA_Reject3_Mean_N', color="red")
-m2 <- list(order = "B",run = 2, condition = 'structure', measure = 'IM_DELTA_Reject3_Mean_N', color="red")
-m3 <- list(order = "A",run = 2, condition = 'exploration', measure = 'IM_DELTA_Reject3_Mean_N', color="red")
+
+#opposition pre post
+m1 <- list(order = "C",run = 1, condition = 'empathy', measure = 'IM_DELTA_Opposition3_Mean_N')
+m2 <- list(order = "B",run = 1, condition = 'structure', measure = 'IM_DELTA_Opposition3_Mean_N')
+m3 <- list(order = "A",run = 1, condition = 'exploration', measure = 'IM_DELTA_Opposition3_Mean_N')
 m <- list(m1, m2, m3)
 mycolors <- c('#939597', "#939597", "#939597")
-plotMeasure(m, "opposition delta", 100,FALSE,-0.04,0.025,score_formatter_2f, mycolors, 1.3, 3)	
+plotMeasure(m, "opposition delta", 100,FALSE,-0.04,0.025,score_formatter_2f, mycolors, 1.3, 3, dstFile="../plots/immigration_esci_opposition_pre_post")
 
-m1 <- list(order = "C",run = 2, condition = 'empathy', measure = 'IM_DELTA_PerceivedThreat_Mean_N', color="red")
-m2 <- list(order = "B",run = 2, condition = 'structure', measure = 'IM_DELTA_PerceivedThreat_Mean_N', color="red")
-m3 <- list(order = "A",run = 2, condition = 'exploration', measure = 'IM_DELTA_PerceivedThreat_Mean_N', color="red")
+
+#perceived threat pre post
+m1 <- list(order = "C",run = 1, condition = 'empathy', measure = 'IM_DELTA_PerceivedThreat_Mean_N')
+m2 <- list(order = "B",run = 1, condition = 'structure', measure = 'IM_DELTA_PerceivedThreat_Mean_N')
+m3 <- list(order = "A",run = 1, condition = 'exploration', measure = 'IM_DELTA_PerceivedThreat_Mean_N')
 m <- list(m1, m2, m3)
 mycolors <- c('#939597', "#939597", "#939597")
-plotMeasure(m, "perceived threat delta", 100,FALSE,-0.04,0.025,score_formatter_2f, mycolors, 1.3, 3)	
+plotMeasure(m, "perceived threat delta", 100,FALSE,-0.04,0.025,score_formatter_2f, mycolors, 1.3, 3, dstFile="../plots/immigration_esci_perceived_threat_pre_post")
