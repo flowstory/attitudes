@@ -210,7 +210,8 @@ df['IM_PerceivedThreat_Median'] = df[["ESS8-B41_1", "ESS8-B42_1", "ESS8-B43_1"]]
 df.rename(index=str, columns={"ESS8-B41_1":"IM_Economic_Threat","ESS8-B42_1":"IM_Cultural_Threat","ESS8-B43_1":"IM_Overall_Threat","ESS8-B38":"IM_Opposition_Same", "ESS8-B39":"IM_Opposition_Different", "ESS8-B40a":"IM_Opposition_PoorerInEurope", "ESS8-B40":"IM_Opposition_PoorerOutEurope"}, inplace=True)
 
 dropCols = ["C2Timer_First Click","C3Timer_First Click","C2Timer_Last Click","C3Timer_Last Click","C2Timer_Page Submit","C3Timer_Page Submit","C2Timer_Click Count","C3Timer_Click Count"]
-dropCols += ["StartDate","EndDate","Status","IPAddress","Progress","Finished","RecipientLastName","RecipientFirstName","RecipientEmail","ExternalReference","LocationLatitude","LocationLongitude","DistributionChannel","UserLanguage"]
+dropCols += [#"StartDate","EndDate",
+             "Status","IPAddress","Progress","Finished","RecipientLastName","RecipientFirstName","RecipientEmail","ExternalReference","LocationLatitude","LocationLongitude","DistributionChannel","UserLanguage"]
 dropCols += ["PROLIFIC_PID","SESSION_ID","session_id","status","started_datetime","completed_date_time","time_taken","sex","language","current_country_of_residence","nationality","country_of_birth","ethnicity","student_status","employment_status","reviewed_at_datetime","entered_code","Nationality","Country of Birth","Date Of Birth", "First Language"]
 dropCols += [col for col in df.columns if "MetaInfo" in col]
 dropCols += [col for col in df.columns if "First Click" in col]

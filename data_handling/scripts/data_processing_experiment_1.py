@@ -312,7 +312,8 @@ rename_cols = {"ESS8-B41-PRE_1":"IM_PRE_Economic_Threat",
 df2.rename(index=str, columns=rename_cols, inplace=True)
 
 dropCols = ["C2Timer_First Click","C3Timer_First Click","C2Timer_Last Click","C3Timer_Last Click","C2Timer_Page Submit","C3Timer_Page Submit","C2Timer_Click Count","C3Timer_Click Count"]
-dropCols += ["StartDate","EndDate","Status","IPAddress","Progress","Finished","RecipientLastName","RecipientFirstName","RecipientEmail","ExternalReference","LocationLatitude","LocationLongitude","DistributionChannel","UserLanguage"]
+dropCols += [#"StartDate","EndDate",
+             "Status","IPAddress","Progress","Finished","RecipientLastName","RecipientFirstName","RecipientEmail","ExternalReference","LocationLatitude","LocationLongitude","DistributionChannel","UserLanguage"]
 dropCols += ["PROLIFIC_PID","SESSION_ID","session_id","status","started_datetime","completed_date_time","time_taken","reviewed_at_datetime","entered_code","Nationality","Country of Birth","Sex","Student Status","First Language","Current Country of Residence", "Employment Status"]
 dropCols += [col for col in df2.columns if "MetaInfo" in col]
 dropCols += [col for col in df2.columns if "First Click" in col]

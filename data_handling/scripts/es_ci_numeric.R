@@ -124,3 +124,29 @@ colnames(results) <- c("condition", "measure", "effect.type", "effect.estimate",
 print(results)
 
 write.csv(results, file="../data_processed/immigration_es_ci_post_pre_numeric.csv", row.names=FALSE)
+
+
+myData <- subset(data, RunId == 1)
+myData <- transform(myData, open= ifelse(HV_Dimension_Open_N > 0, "c", (ifelse(HV_Dimension_Open_N < 0, "o", "u"))))
+myData$GenderByCond = paste(myData$Gender, myData$Group, sep="-")
+bootES(myData, data.col = "IM_DELTA_Opposition3_Mean_N", group.col="GenderByCond", contrast=c("1-structure"=-1, "2-structure"=1), effect.type="hedges.g", R=10000, ci.conf=0.95)
+
+myData$OpenByCond = paste(myData$open, myData$Group, sep="-")
+bootES(myData, data.col = "IM_DELTA_Opposition3_Mean_N", group.col="OpenByCond", contrast=c("o-structure"=-1, "c-structure"=1), effect.type="hedges.g", R=10000, ci.conf=0.95)
+bootES(myData, data.col = "IM_DELTA_PerceivedThreat_Mean_N", group.col="OpenByCond", contrast=c("o-empathy"=-1, "u-empathy"=1), effect.type="hedges.g", R=10000, ci.conf=0.95)
+
+
+
+# HUMAN VALUES
+
+data$HV_OpennessToChange_N <- rescale(data$HV_OpennessToChange, to=c(0,1), from=c(0,6))
+data$HV_Conservation_N <- rescale(data$HV_Conservation, to=c(0,1), from=c(0,6))
+data$HV_SelfTranscendence_N <- rescale(data$HV_SelfTranscendence, to=c(0,1), from=c(0,6))
+data$HV_SelfEnhancement_N <- rescale(data$HV_SelfEnhancement, to=c(0,1), from=c(0,6))
+
+data$HV_Dimension_Open_N <- data$HV_OpennessToChange_N - data$HV_Conservation_N
+data$HV_Dimension_Self_N <- data$HV_SelfTranscendence_N - data$HV_SelfEnhancement_N
+
+myData2 <- subset(data, (RunId == 1) & (Group == "exploration"))
+myData2 <- transform(myData2, open= ifelse(HV_Dimension_Open_N > 0, "c", (ifelse(HV_Dimension_Open_N < 0, "o", "u"))))
+bootES(myData2, data.col = "IM_DELTA_Opposition3_Mean_N", group.col="open", contrast=c("o","c"), effect.type = "hedges.g", R=10000, ci.conf=0.95)

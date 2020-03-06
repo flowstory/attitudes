@@ -1,8 +1,8 @@
 # Charles Perin, Johannes Liem
 
-path <- "C:/Users/johannes/ownCloud/FlowstoryPhD/flowstory_3/github/attitudes/data_handling/scripts"
+path <- "C:/data/cumulus/phd/flowstory_3_attitudes/github/attitudes/data_handling/scripts"
 
-dependencies <- c("bootstrap_macros.R","plotting.R")
+dependencies <- c("bootstrap_macros.r","plotting.r")
 
 file <- "../data_processed/merged_ex1_ex2_ess8_selection.csv"
 
@@ -73,6 +73,8 @@ data$IM_PRE_PerceivedThreat_Mean_N <- rescale(data$IM_PRE_PerceivedThreat_Mean, 
 data$IM_POST_PerceivedThreat_Mean_N <- rescale(data$IM_POST_PerceivedThreat_Mean, to=c(0,1), from=c(0,10))
 data$IM_DELTA_PerceivedThreat_Mean_N <- data$IM_POST_PerceivedThreat_Mean_N - data$IM_PRE_PerceivedThreat_Mean_N
 
+
+
 data$Group <- as.factor(data$Group)
 data$ResponseId = as.factor(data$ResponseId)
 data$condition = as.factor(data$Group)
@@ -95,14 +97,49 @@ plotMeasure <- function(toPlot, title, measurefactor,isLog,minplot,maxplot,forma
 		
 		for (tP in toPlot) {
 		  data_run <- subset(data, RunId == tP$run)
-			condition_data <- subset(data_run , condition == tP$condition)
-			values <- condition_data[[tP$measure]]
+			condition_data <- subset(data_run, condition == tP$condition)
+			if ("filter" %in% names(tP)) {
+			  if (tP$filter == "gender") {
+			    filter_data <- subset(condition_data, Gender == tP$fValue)
+			    values <- filter_data[[tP$measure]]
+			  } else if(tP$filter == "Age"){
+			    if(tP$fValue == -1){
+			      filter_data <- subset(condition_data, Age < 39)
+			    } else if (tP$fValue == 1){
+			      filter_data <- subset(condition_data, Age >= 39)
+			    }
+			    values <- filter_data[[tP$measure]]
+			  } else if(tP$filter == "HV_Dimension_Open_N"){
+			    if(tP$fValue == -1){
+			      filter_data <- subset(condition_data, HV_Dimension_Open_N < 0)
+			    } else if(tP$fValue == 0) {
+			      filter_data <- subset(condition_data, HV_Dimension_Open_N == 0)
+			    } else if(tP$fValue == 1){
+			      filter_data <- subset(condition_data, HV_Dimension_Open_N > 0)
+			    }
+			    values <- filter_data[[tP$measure]]
+			  } else if(tP$filter == "HV_Dimension_Self_N"){
+			    if(tP$fValue == -1){
+			      filter_data <- subset(condition_data, HV_Dimension_Self_N < 0)
+			    } else if(tP$fValue == 0) {
+			      filter_data <- subset(condition_data, HV_Dimension_Self_N == 0)
+			    } else if(tP$fValue == 1){
+			      filter_data <- subset(condition_data, HV_Dimension_Self_N > 0)
+			    }
+			    values <- filter_data[[tP$measure]]
+			  } else {
+			    values <- condition_data[[tP$measure]]
+			  }
+			} else {
+			  values <- condition_data[[tP$measure]]
+			}
+			
 			#filer NA values
 			values <- values[!is.na(values)]
 			
 			
 			dataN = length(values)
-			#print(dataN)
+			print(dataN)
 			
 			bootstraped_mean <- bootstrapCI(sampleStat,values)
 			
@@ -127,7 +164,7 @@ plotMeasure <- function(toPlot, title, measurefactor,isLog,minplot,maxplot,forma
 		
 		colnames(analysis) <- c("run", "condition", "measure","pointEstimate", "ci.min", "ci.max", "label")
 		print(analysis)
-		#hplot(analysis, title, "", "label", minplot, maxplot, formatter, png=paste(title,".png",sep=""), pdf=paste(title,".pdf",sep=""))
+		hplot(analysis, title, "", "label", minplot, maxplot, formatter, png=paste(title,".png",sep=""), pdf=paste(title,".pdf",sep=""))
 		hplotNoLabels(analysis, title, "", "label", minplot, maxplot, formatter, pdf=paste(dstFile,"NoLabels.pdf",sep="_"), width=w, height=h, cbbPalette = myColors)
   cat(paste("\n-----DONE-----\n"))
 }
@@ -325,3 +362,173 @@ m3 <- list(order = "A",run = 1, condition = 'exploration', measure = 'IM_DELTA_P
 m <- list(m1, m2, m3)
 mycolors <- c('#939597', "#939597", "#939597")
 plotMeasure(m, "perceived threat delta", 100,FALSE,-0.04,0.025,score_formatter_2f, mycolors, 1.3, 3, dstFile="../plots/immigration_esci_perceived_threat_pre_post")
+
+
+#opposition pre post
+m1a <- list(order = "F",run = 1, condition = 'empathy', filter="gender", fValue=1, measure = 'IM_DELTA_Opposition3_Mean_N')
+m1b <- list(order = "E",run = 1, condition = 'empathy', filter="gender", fValue=2, measure = 'IM_DELTA_Opposition3_Mean_N')
+m2a <- list(order = "D",run = 1, condition = 'structure', filter="gender", fValue=1, measure = 'IM_DELTA_Opposition3_Mean_N')
+m2b <- list(order = "C",run = 1, condition = 'structure', filter="gender", fValue=2, measure = 'IM_DELTA_Opposition3_Mean_N')
+m3a <- list(order = "B",run = 1, condition = 'exploration', filter="gender", fValue=1, measure = 'IM_DELTA_Opposition3_Mean_N')
+m3b <- list(order = "A",run = 1, condition = 'exploration', filter="gender", fValue=2, measure = 'IM_DELTA_Opposition3_Mean_N')
+m <- list(m1a, m1b, m2a, m2b, m3a, m3b)
+mycolors <- c('#800000', "#0000ff", '#800000', "#0000ff", '#800000', '#0000ff')
+plotMeasure(m, "opposition delta", 100,FALSE,-0.04,0.04,score_formatter_2f, mycolors, 1.3, 3, dstFile="../plots/immigration_esci_opposition_pre_post_gender")
+
+
+#perceived threat pre post
+m1a <- list(order = "F",run = 1, condition = 'empathy', filter="gender", fValue=1, measure = 'IM_DELTA_PerceivedThreat_Mean_N')
+m1b <- list(order = "E",run = 1, condition = 'empathy', filter="gender", fValue=2, measure = 'IM_DELTA_PerceivedThreat_Mean_N')
+m2a <- list(order = "D",run = 1, condition = 'structure', filter="gender", fValue=1, measure = 'IM_DELTA_PerceivedThreat_Mean_N')
+m2b <- list(order = "C",run = 1, condition = 'structure', filter="gender", fValue=2, measure = 'IM_DELTA_PerceivedThreat_Mean_N')
+m3a <- list(order = "B",run = 1, condition = 'exploration', filter="gender", fValue=1, measure = 'IM_DELTA_PerceivedThreat_Mean_N')
+m3b <- list(order = "A",run = 1, condition = 'exploration', filter="gender", fValue=2, measure = 'IM_DELTA_PerceivedThreat_Mean_N')
+m <- list(m1a, m1b, m2a, m2b, m3a, m3b)
+mycolors <- c('#800000', "#0000ff", '#800000', "#0000ff", '#800000', '#0000ff')
+plotMeasure(m, "perceived threat delta", 100,FALSE,-0.045,0.025,score_formatter_2f, mycolors, 1.3, 3, dstFile="../plots/immigration_esci_perceived_threat_pre_post_gender")
+
+
+#opposition pre post
+m1a <- list(order = "F",run = 1, condition = 'empathy', filter="gender", fValue=1, measure = 'IM_DELTA_Opposition3_Mean_N')
+m1b <- list(order = "E",run = 1, condition = 'empathy', filter="gender", fValue=2, measure = 'IM_DELTA_Opposition3_Mean_N')
+m2a <- list(order = "D",run = 1, condition = 'structure', filter="gender", fValue=1, measure = 'IM_DELTA_Opposition3_Mean_N')
+m2b <- list(order = "C",run = 1, condition = 'structure', filter="gender", fValue=2, measure = 'IM_DELTA_Opposition3_Mean_N')
+m3a <- list(order = "B",run = 1, condition = 'exploration', filter="gender", fValue=1, measure = 'IM_DELTA_Opposition3_Mean_N')
+m3b <- list(order = "A",run = 1, condition = 'exploration', filter="gender", fValue=2, measure = 'IM_DELTA_Opposition3_Mean_N')
+m <- list(m1a, m1b, m2a, m2b, m3a, m3b)
+mycolors <- c('#800000', "#0000ff", '#800000', "#0000ff", '#800000', '#0000ff')
+plotMeasure(m, "opposition delta", 100,FALSE,-0.04,0.04,score_formatter_2f, mycolors, 1.3, 3, dstFile="../plots/immigration_esci_opposition_pre_post_gender")
+
+#perceived threat pre post
+m1a <- list(order = "I",run = 1, condition = 'empathy', filter="HV_Dimension_Self_N", fValue=-1, measure = 'IM_DELTA_PerceivedThreat_Mean_N')
+m1b <- list(order = "H",run = 1, condition = 'empathy', filter="HV_Dimension_Self_N", fValue=0, measure = 'IM_DELTA_PerceivedThreat_Mean_N')
+m1c <- list(order = "G",run = 1, condition = 'empathy', filter="HV_Dimension_Self_N", fValue=1, measure = 'IM_DELTA_PerceivedThreat_Mean_N')
+m2a <- list(order = "F",run = 1, condition = 'structure', filter="HV_Dimension_Self_N", fValue=-1, measure = 'IM_DELTA_PerceivedThreat_Mean_N')
+m2b <- list(order = "E",run = 1, condition = 'structure', filter="HV_Dimension_Self_N", fValue=0, measure = 'IM_DELTA_PerceivedThreat_Mean_N')
+m2c <- list(order = "D",run = 1, condition = 'structure', filter="HV_Dimension_Self_N", fValue=1, measure = 'IM_DELTA_PerceivedThreat_Mean_N')
+m3a <- list(order = "C",run = 1, condition = 'exploration', filter="HV_Dimension_Self_N", fValue=-1, measure = 'IM_DELTA_PerceivedThreat_Mean_N')
+m3b <- list(order = "B",run = 1, condition = 'exploration', filter="HV_Dimension_Self_N", fValue=0, measure = 'IM_DELTA_PerceivedThreat_Mean_N')
+m3c <- list(order = "A",run = 1, condition = 'exploration', filter="HV_Dimension_Self_N", fValue=1, measure = 'IM_DELTA_PerceivedThreat_Mean_N')
+m <- list(m1a, m1c, m2a, m2c, m3a, m3c)
+mycolors <- c('#800000', "#0000ff", '#800000', "#0000ff", '#800000', '#0000ff')
+#mycolors <- c('#800000', "#0000ff", '#AABBCC', '#800000', "#0000ff", '#AABBCC' , '#800000', '#0000ff', '#AABBCC')
+plotMeasure(m, "perceived threat delta", 100,FALSE,-0.045,0.025,score_formatter_2f, mycolors, 1.3, 3, dstFile="../plots/immigration_esci_perceived_threat_pre_post_hv_self_open")
+
+#perceived threat pre post
+m1a <- list(order = "I",run = 1, condition = 'empathy', filter="HV_Dimension_Open_N", fValue=-1, measure = 'IM_DELTA_PerceivedThreat_Mean_N')
+m1b <- list(order = "H",run = 1, condition = 'empathy', filter="HV_Dimension_Open_N", fValue=0, measure = 'IM_DELTA_PerceivedThreat_Mean_N')
+m1c <- list(order = "G",run = 1, condition = 'empathy', filter="HV_Dimension_Open_N", fValue=1, measure = 'IM_DELTA_PerceivedThreat_Mean_N')
+m2a <- list(order = "F",run = 1, condition = 'structure', filter="HV_Dimension_Open_N", fValue=-1, measure = 'IM_DELTA_PerceivedThreat_Mean_N')
+m2b <- list(order = "E",run = 1, condition = 'structure', filter="HV_Dimension_Open_N", fValue=0, measure = 'IM_DELTA_PerceivedThreat_Mean_N')
+m2c <- list(order = "D",run = 1, condition = 'structure', filter="HV_Dimension_Open_N", fValue=1, measure = 'IM_DELTA_PerceivedThreat_Mean_N')
+m3a <- list(order = "C",run = 1, condition = 'exploration', filter="HV_Dimension_Open_N", fValue=-1, measure = 'IM_DELTA_PerceivedThreat_Mean_N')
+m3b <- list(order = "B",run = 1, condition = 'exploration', filter="HV_Dimension_Open_N", fValue=0, measure = 'IM_DELTA_PerceivedThreat_Mean_N')
+m3c <- list(order = "A",run = 1, condition = 'exploration', filter="HV_Dimension_Open_N", fValue=1, measure = 'IM_DELTA_PerceivedThreat_Mean_N')
+m <- list(m1a, m1c, m2a, m2c, m3a, m3c)
+mycolors <- c('#800000', "#0000ff", '#800000', "#0000ff", '#800000', '#0000ff')
+#mycolors <- c('#800000', "#0000ff", '#AABBCC', '#800000', "#0000ff", '#AABBCC' , '#800000', '#0000ff', '#AABBCC')
+plotMeasure(m, "perceived threat delta", 100,FALSE,-0.045,0.025,score_formatter_2f, mycolors, 1.3, 3, dstFile="../plots/immigration_esci_perceived_threat_pre_post_hv_dim_open")
+
+
+
+#perceived threat pre post
+m1a <- list(order = "I",run = 1, condition = 'empathy', filter="HV_Dimension_Open_N", fValue=-1, measure = 'IM_DELTA_Opposition3_Mean_N')
+m1b <- list(order = "H",run = 1, condition = 'empathy', filter="HV_Dimension_Open_N", fValue=0, measure = 'IM_DELTA_Opposition3_Mean_N')
+m1c <- list(order = "G",run = 1, condition = 'empathy', filter="HV_Dimension_Open_N", fValue=1, measure = 'IM_DELTA_Opposition3_Mean_N')
+m2a <- list(order = "F",run = 1, condition = 'structure', filter="HV_Dimension_Open_N", fValue=-1, measure = 'IM_DELTA_Opposition3_Mean_N')
+m2b <- list(order = "E",run = 1, condition = 'structure', filter="HV_Dimension_Open_N", fValue=0, measure = 'IM_DELTA_Opposition3_Mean_N')
+m2c <- list(order = "D",run = 1, condition = 'structure', filter="HV_Dimension_Open_N", fValue=1, measure = 'IM_DELTA_Opposition3_Mean_N')
+m3a <- list(order = "C",run = 1, condition = 'exploration', filter="HV_Dimension_Open_N", fValue=-1, measure = 'IM_DELTA_Opposition3_Mean_N')
+m3b <- list(order = "B",run = 1, condition = 'exploration', filter="HV_Dimension_Open_N", fValue=0, measure = 'IM_DELTA_Opposition3_Mean_N')
+m3c <- list(order = "A",run = 1, condition = 'exploration', filter="HV_Dimension_Open_N", fValue=1, measure = 'IM_DELTA_Opposition3_Mean_N')
+m <- list(m1a, m1c, m2a, m2c, m3a, m3c)
+mycolors <- c('#800000', "#0000ff", '#800000', "#0000ff", '#800000', '#0000ff')
+#mycolors <- c('#800000', "#0000ff", '#AABBCC', '#800000', "#0000ff", '#AABBCC' , '#800000', '#0000ff', '#AABBCC')
+plotMeasure(m, "perceived threat delta", 100,FALSE,-0.06,0.03,score_formatter_2f, mycolors, 1.3, 3, dstFile="../plots/immigration_esci_opposition_pre_post_hv_dim_open")
+
+#opposition pre post
+m1a <- list(order = "I",run = 1, condition = 'empathy', filter="HV_Dimension_Self_N", fValue=-1, measure = 'IM_DELTA_Opposition3_Mean_N')
+m1b <- list(order = "H",run = 1, condition = 'empathy', filter="HV_Dimension_Self_N", fValue=0, measure = 'IM_DELTA_Opposition3_Mean_N')
+m1c <- list(order = "G",run = 1, condition = 'empathy', filter="HV_Dimension_Self_N", fValue=1, measure = 'IM_DELTA_Opposition3_Mean_N')
+m2a <- list(order = "F",run = 1, condition = 'structure', filter="HV_Dimension_Self_N", fValue=-1, measure = 'IM_DELTA_Opposition3_Mean_N')
+m2b <- list(order = "E",run = 1, condition = 'structure', filter="HV_Dimension_Self_N", fValue=0, measure = 'IM_DELTA_Opposition3_Mean_N')
+m2c <- list(order = "D",run = 1, condition = 'structure', filter="HV_Dimension_Self_N", fValue=1, measure = 'IM_DELTA_Opposition3_Mean_N')
+m3a <- list(order = "C",run = 1, condition = 'exploration', filter="HV_Dimension_Self_N", fValue=-1, measure = 'IM_DELTA_Opposition3_Mean_N')
+m3b <- list(order = "B",run = 1, condition = 'exploration', filter="HV_Dimension_Self_N", fValue=0, measure = 'IM_DELTA_Opposition3_Mean_N')
+m3c <- list(order = "A",run = 1, condition = 'exploration', filter="HV_Dimension_Self_N", fValue=1, measure = 'IM_DELTA_Opposition3_Mean_N')
+m <- list(m1a, m1c, m2a, m2c, m3a, m3c)
+mycolors <- c('#800000', "#0000ff", '#800000', "#0000ff", '#800000', '#0000ff')
+#mycolors <- c('#800000', "#0000ff", '#AABBCC', '#800000', "#0000ff", '#AABBCC' , '#800000', '#0000ff', '#AABBCC')
+plotMeasure(m, "perceived threat delta", 100,FALSE,-0.05,0.025,score_formatter_2f, mycolors, 1.3, 3, dstFile="../plots/immigration_esci_opposition_pre_post_hv_dim_self")
+
+
+
+#opposition pre post 
+m1a <- list(order = "F",run = 1, condition = 'empathy', filter="gender", fValue=2, measure = 'IM_PRE_Opposition3_Mean_N')
+m1b <- list(order = "E",run = 1, condition = 'empathy', filter="gender", fValue=2, measure = 'IM_POST_Opposition3_Mean_N')
+m2a <- list(order = "D",run = 1, condition = 'structure', filter="gender", fValue=2, measure = 'IM_PRE_Opposition3_Mean_N')
+m2b <- list(order = "C",run = 1, condition = 'structure', filter="gender", fValue=2, measure = 'IM_POST_Opposition3_Mean_N')
+m3a <- list(order = "B",run = 1, condition = 'exploration', filter="gender", fValue=2, measure = 'IM_PRE_Opposition3_Mean_N')
+m3b <- list(order = "A",run = 1, condition = 'exploration', filter="gender", fValue=2, measure = 'IM_POST_Opposition3_Mean_N')
+m <- list(m1a, m1b, m2a, m2b, m3a, m3b)
+mycolors <- c('#800000', "#0000ff", '#800000', "#0000ff", '#800000', '#0000ff')
+plotMeasure(m, "opposition delta", 100,FALSE,0,1,score_formatter_2f, mycolors, 1.3, 3, dstFile="../plots/immigration_esci_opposition_pre_post_gender")
+
+
+#opposition pre post 
+m1a <- list(order = "F",run = 1, condition = 'empathy', filter="HV_Dimension_Open_N", fValue=-1, measure = 'IM_PRE_Opposition3_Mean_N')
+m1b <- list(order = "E",run = 1, condition = 'empathy', filter="HV_Dimension_Open_N", fValue=-1, measure = 'IM_POST_Opposition3_Mean_N')
+m2a <- list(order = "D",run = 1, condition = 'structure', filter="HV_Dimension_Open_N", fValue=2, measure = 'IM_PRE_Opposition3_Mean_N')
+m2b <- list(order = "C",run = 1, condition = 'structure', filter="HV_Dimension_Open_N", fValue=2, measure = 'IM_POST_Opposition3_Mean_N')
+m3a <- list(order = "B",run = 1, condition = 'exploration', filter="HV_Dimension_Open_N", fValue=2, measure = 'IM_PRE_Opposition3_Mean_N')
+m3b <- list(order = "A",run = 1, condition = 'exploration', filter="HV_Dimension_Open_N", fValue=2, measure = 'IM_POST_Opposition3_Mean_N')
+m <- list(m1a, m1b, m2a, m2b, m3a, m3b)
+mycolors <- c('#800000', "#0000ff", '#800000', "#0000ff", '#800000', '#0000ff')
+plotMeasure(m, "opposition delta", 100,FALSE,0,1,score_formatter_2f, mycolors, 1.3, 3, dstFile="../plots/immigration_esci_opposition_pre_post_gender")
+
+
+#opposition pre post 
+m1a <- list(order = "F",run = 2, condition = 'empathy', filter="gender", fValue=1, measure = 'IM_POST_PerceivedThreat_Mean_N')
+m1b <- list(order = "E",run = 2, condition = 'empathy', filter="gender", fValue=2, measure = 'IM_POST_PerceivedThreat_Mean_N')
+m2a <- list(order = "D",run = 2, condition = 'structure', filter="gender", fValue=1, measure = 'IM_POST_PerceivedThreat_Mean_N')
+m2b <- list(order = "C",run = 2, condition = 'structure', filter="gender", fValue=2, measure = 'IM_POST_PerceivedThreat_Mean_N')
+m3a <- list(order = "B",run = 2, condition = 'exploration', filter="gender", fValue=1, measure = 'IM_POST_PerceivedThreat_Mean_N')
+m3b <- list(order = "A",run = 2, condition = 'exploration', filter="gender", fValue=2, measure = 'IM_POST_PerceivedThreat_Mean_N')
+m <- list(m1a, m1b, m2a, m2b, m3a, m3b)
+mycolors <- c('#800000', "#0000ff", '#800000', "#0000ff", '#800000', '#0000ff')
+plotMeasure(m, "opposition delta", 100,FALSE,0,1,score_formatter_2f, mycolors, 1.3, 3, dstFile="../plots/immigration_esci_opposition_pre_post_gender")
+
+
+#opposition pre post 
+m1a <- list(order = "F",run = 2, condition = 'empathy', filter="HV_Dimension_Open_N", fValue=-1, measure = 'IM_POST_PerceivedThreat_Mean_N')
+m1b <- list(order = "E",run = 2, condition = 'empathy', filter="HV_Dimension_Open_N", fValue=1, measure = 'IM_POST_PerceivedThreat_Mean_N')
+m2a <- list(order = "D",run = 2, condition = 'structure', filter="HV_Dimension_Open_N", fValue=-1, measure = 'IM_POST_PerceivedThreat_Mean_N')
+m2b <- list(order = "C",run = 2, condition = 'structure', filter="HV_Dimension_Open_N", fValue=1, measure = 'IM_POST_PerceivedThreat_Mean_N')
+m3a <- list(order = "B",run = 2, condition = 'exploration', filter="HV_Dimension_Open_N", fValue=-1, measure = 'IM_POST_PerceivedThreat_Mean_N')
+m3b <- list(order = "A",run = 2, condition = 'exploration', filter="HV_Dimension_Open_N", fValue=1, measure = 'IM_POST_PerceivedThreat_Mean_N')
+m <- list(m1a, m1b, m2a, m2b, m3a, m3b)
+mycolors <- c('#800000', "#0000ff", '#800000', "#0000ff", '#800000', '#0000ff')
+plotMeasure(m, "opposition delta", 100,FALSE,0,1,score_formatter_2f, mycolors, 1.3, 3, dstFile="../plots/immigration_esci_r2_pt_post_open")
+
+#opposition pre post 
+m1a <- list(order = "F",run = 2, condition = 'empathy', filter="HV_Dimension_Open_N", fValue=-1, measure = 'IM_POST_Opposition3_Mean_N')
+m1b <- list(order = "E",run = 2, condition = 'empathy', filter="HV_Dimension_Open_N", fValue=1, measure = 'IM_POST_Opposition3_Mean_N')
+m2a <- list(order = "D",run = 2, condition = 'structure', filter="HV_Dimension_Open_N", fValue=-1, measure = 'IM_POST_Opposition3_Mean_N')
+m2b <- list(order = "C",run = 2, condition = 'structure', filter="HV_Dimension_Open_N", fValue=1, measure = 'IM_POST_Opposition3_Mean_N')
+m3a <- list(order = "B",run = 2, condition = 'exploration', filter="HV_Dimension_Open_N", fValue=-1, measure = 'IM_POST_Opposition3_Mean_N')
+m3b <- list(order = "A",run = 2, condition = 'exploration', filter="HV_Dimension_Open_N", fValue=1, measure = 'IM_POST_Opposition3_Mean_N')
+m <- list(m1a, m1b, m2a, m2b, m3a, m3b)
+mycolors <- c('#800000', "#0000ff", '#800000', "#0000ff", '#800000', '#0000ff')
+plotMeasure(m, "opposition delta", 100,FALSE,0,1,score_formatter_2f, mycolors, 1.3, 3, dstFile="../plots/immigration_esci_r2_opp_post_open")
+
+#opposition pre post 
+m1a <- list(order = "F",run = 1, condition = 'empathy', filter="Age", fValue=-1, measure = 'IM_DELTA_Opposition3_Mean_N')
+m1b <- list(order = "E",run = 1, condition = 'empathy', filter="Age", fValue=1, measure = 'IM_DELTA_Opposition3_Mean_N')
+m2a <- list(order = "D",run = 1, condition = 'structure', filter="Age", fValue=-1, measure = 'IM_DELTA_Opposition3_Mean_N')
+m2b <- list(order = "C",run = 1, condition = 'structure', filter="Age", fValue=1, measure = 'IM_DELTA_Opposition3_Mean_N')
+m3a <- list(order = "B",run = 1, condition = 'exploration', filter="Age", fValue=-1, measure = 'IM_DELTA_Opposition3_Mean_N')
+m3b <- list(order = "A",run = 1, condition = 'exploration', filter="Age", fValue=1, measure = 'IM_DELTA_Opposition3_Mean_N')
+m <- list(m1a, m1b, m2a, m2b, m3a, m3b)
+mycolors <- c('#800000', "#0000ff", '#800000', "#0000ff", '#800000', '#0000ff')
+plotMeasure(m, "opposition delta", 100,FALSE,-0.05,0.05,score_formatter_2f, mycolors, 1.3, 3, dstFile="../plots/immigration_esci_opposition_pre_post_age")
+
